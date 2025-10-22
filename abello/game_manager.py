@@ -19,7 +19,7 @@ class GameManager():
         self.player_model.add(name, short, block, grade)
 
     def delete_player(self, name):
-        self.player_model.add(name)
+        self.player_model.delete(name)
 
     def game_data_no_battle(self, player1, player2):
         return self.game_result_model.game_no_battle(player1, player2)

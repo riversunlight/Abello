@@ -6,11 +6,25 @@ import json
 gm = GameManager()
 
 # === デバッグ用 ===
+
+#デバッグページ(旧)
+@app.route('/debug_index')
+def debug_index():
+    players, ranks, game_data, now_matches, end_game, no_matches = gm.data_for_index()
+    return render_template(
+        'debug_index.html',
+        players=players,
+        ranks=ranks,
+        game_data=game_data,
+        now_matches=now_matches,
+        end_game=end_game,
+        no_matches = no_matches
+    )
+
 #トップページ
 @app.route('/')
 def index():
     players, ranks, game_data, now_matches, end_game, no_matches = gm.data_for_index()
-
     return render_template(
         'index.html',
         players=players,
