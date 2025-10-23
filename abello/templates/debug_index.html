@@ -19,6 +19,7 @@
     <h2>暫定順位表</h2>
     <table border="1">
       <tr>
+        <th>ID</th>
         <th>名前</th>
         <th>勝数</th>
         <th>負数</th>
@@ -28,17 +29,18 @@
       </tr>
       {% for player in ranks %}
       <tr {% if player.end_game == 1 %} bgcolor="#aa0000" {% endif %}>
+        <td>{{ player.player_id }}</td>
         <td>{{ player.name }}</td>
         <td>{{ player.win }}</td>
         <td>{{ player.lose }}</td>
         <td>{{ player.stone_diff }}</td>
         <td>
-          <a href="{{ url_for('person_result', name=player.name) }}"
+          <a href="{{ url_for('person_result', player_id=player.player_id) }}"
             >戦績確認</a
           >
         </td>
         <td>
-          <a href="{{ url_for('change_status', name=player.name)}}"
+          <a href="{{ url_for('change_status', player_id=player.player_id)}}"
             >{{ player.status }}</a
           >
         </td>
@@ -49,20 +51,22 @@
     <h2>選手名簿</h2>
     <table border="1">
       <tr>
+        <th>ID</th>
         <th>名前</th>
         <th>状態</th>
         <th>削除</th>
       </tr>
       {% for player in players %}
       <tr>
+        <td>{{ player.player_id}}</td>
         <td>{{ player.name }}</td>
         <td>
-          <a href="{{ url_for('change_status', name=player.name)}}"
+          <a href="{{ url_for('change_status', player_id=player.player_id)}}"
             >{{ player.status }}</a
           >
         </td>
         <td>
-          <a href="{{url_for('delete_player', name=player.name)}}">削除</a>
+          <a href="{{url_for('delete_player', player_id=player.player_id)}}">削除</a>
         </td>
       </tr>
       {% endfor %}

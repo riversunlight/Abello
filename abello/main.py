@@ -43,14 +43,15 @@ def add_player():
 
 @app.route('/delete_player')
 def delete_player():
-    name = request.args.get('name')
-    gm.delete_player(name)
+    player_id = request.args.get('player_id')
+    player_id = int(player_id)
+    gm.delete_player(player_id)
     return redirect(url_for('index'))
 
 @app.route('/add_game')
 def add_game():
-    player1 = request.args.get('player1')
-    player2 = request.args.get('player2')
+    player1 = int(request.args.get('player1'))
+    player2 = int(request.args.get('player2'))
     return render_template(
         'game_input.html',
         player1=player1,
@@ -60,8 +61,8 @@ def add_game():
 
 @app.route('/fix_game')
 def fix_game():
-    player1 = request.args.get('player1')
-    player2 = request.args.get('player2')
+    player1 = int(request.args.get('player1'))
+    player2 = int(request.args.get('player2'))
     
     if player1 == '-' or player2 == '-':
         player = player1 if player2 == '-' else player2
@@ -84,7 +85,7 @@ def fix_game():
 
 @app.route('/fix_no_game', methods=['POST'])
 def fix_no_game():
-    player = request.form['player']
+    player = int(request.form['player'])
     kind = request.form['kind']
     stone_diff = request.form['stone_diff']
     gm.fix_no_game(player, kind, stone_diff)
@@ -107,8 +108,8 @@ def matching():
 
 @app.route('/fix_draw')
 def fix_draw():
-    player1 = request.args.get('player1')
-    player2 = request.args.get('player2')
+    player1 = int(request.args.get('player1'))
+    player2 = int(request.args.get('player2'))
 
     round, prev_data = gm.get_game_result(player1, player2)
     return render_template(
@@ -122,10 +123,10 @@ def fix_draw():
 
 @app.route('/fix_prev_game', methods=["POST"])
 def fix_prev_game():
-    win_name = request.form['winner']
+    win_player_id = int(request.form['winner'])
     round = request.form['round']
     stone_diff = request.form['stone_diff']
-    gm.fix_prev_game(win_name, round, stone_diff)
+    gm.fix_prev_game(win_player_id, round, stone_diff)
     return redirect(url_for('index'))
 
 @app.route('/hand_matching')
@@ -139,59 +140,59 @@ def hand_matching():
 
 @app.route('/swap_match', methods=["POST"])
 def swap_match():
-    names = ["_", "__"]
-    names[0] = request.form['name1']
-    names[1] = request.form['name2']
-    
-    now_match = gm.now_match(names)
+    player_ids = ["_", "__"]
+
+    player_ids[0] = int(request.form['player1_id'])
+    player_ids[1] = int(request.form['player2_id'])
+    now_match = gm.now_match(player_ids)
     if len(now_match) != 0:
         return redirect(url_for('index'))
 
-    if names[0] != names[1]:
-        gm.swap_matches(names)
+    if player_ids[0] != player_ids[1]:
+        gm.swap_matches(player_ids)
 
     return redirect(url_for('index'))
 
 @app.route('/change_status')
 def change_status():
-    name = request.args.get('name')
-    status = gm.get_status(name)
+    player_id = int(request.args.get('player_id'))
+    status = gm.get_status(player_id)
     return render_template(
         'change_status.html',
-        name=name,
+        player_id=player_id,
         status = status
     )
 
 @app.route('/change_status_exe', methods=["POST"])
 def change_status_exe():
-    name = request.form['name']
+    player_id = int(request.form['player_id'])
     status = request.form['status']
-    gm.change_status_exe(name, status)
+    gm.change_status_exe(player_id, status)
     return redirect(url_for('index'))
 
 @app.route('/delete_match')
 def delete_match():
-    name1 = request.args.get('name1')
-    name2 = request.args.get('name2')
-    gm.delete_match(name1, name2)
+    player_id1 = int(request.args.get('player_id1'))
+    player_id2 = int(request.args.get('player_id2'))
+    gm.delete_match(player_id1, player_id2)
     return redirect(url_for('index'))
 
 @app.route('/game_input', methods=["POST"])
 def game_input():
-    win_name = request.form['winner']
+    win_player_id = int(request.form['winner'])
     stone_diff = request.form['stone_diff']
-    gm.game_input(win_name, stone_diff)
+    gm.game_input(win_player_id, stone_diff)
     return redirect(url_for('index'))
 
 @app.route('/person_result')
 def person_result():
-    name = request.args.get('name')
+    player_id = int(request.args.get('player_id'))
 
-    person_results, total_win, total_lose, total_stone = gm.person_result(name)
+    person_results, total_win, total_lose, total_stone = gm.person_result(player_id)
     return render_template(
         'person_result.html',
         person_results=person_results,
-        name=name,
+        player_id=player_id,
         win=total_win,
         lose=total_lose,
         stone_diff=total_stone

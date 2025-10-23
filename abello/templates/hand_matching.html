@@ -24,9 +24,9 @@
     <br />
     <form method="post" action="{{ url_for('swap_match') }}">
       {% for i in [1, 2] %} 選手{{i}}
-      <select name="name{{i}}">
+      <select name="player{{i}}_id">
         {% for player in players %}
-        <option value="{{player.name}}">{{player.name}}</option>
+        <option value="{{player.player_id}}">{{player.name}}</option>
         {% endfor %}
       </select>
       <br />
