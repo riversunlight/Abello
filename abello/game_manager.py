@@ -58,6 +58,7 @@ class GameManager():
 
         winners = {}
         losers = {}
+        players_dict = {}
         for row in matches_result:
             winner = row[1]
             loser = row[2]
@@ -86,6 +87,7 @@ class GameManager():
                 finish_game = 1
 
             ranks.append({'player_id': player_id, 'name': name, 'win': win, 'lose': lose, 'stone_diff': stone_diff, 'status': status, 'end_game': finish_game})
+            players_dict[player_id] = {'name': name}
 
         ranks = sorted(ranks, key=cmp_to_key(self.matcher.comp))
 
@@ -97,7 +99,7 @@ class GameManager():
                 now_matches.append({'player1': row[0], 'player2': row[1], 'winner': row[2]})
                 if row[2] != "PLAYING":
                     end_game += 1
-        return players, ranks, game_data, now_matches, end_game, no_matches
+        return players, ranks, game_data, now_matches, end_game, no_matches, players_dict
     
     def data_for_hand(self):
         now_matches = []

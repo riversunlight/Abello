@@ -10,7 +10,7 @@ gm = GameManager()
 #デバッグページ(旧)
 @app.route('/debug_index')
 def debug_index():
-    players, ranks, game_data, now_matches, end_game, no_matches = gm.data_for_index()
+    players, ranks, game_data, now_matches, end_game, no_matches, players_dict = gm.data_for_index()
     return render_template(
         'debug_index.html',
         players=players,
@@ -18,13 +18,14 @@ def debug_index():
         game_data=game_data,
         now_matches=now_matches,
         end_game=end_game,
-        no_matches = no_matches
+        no_matches = no_matches,
+        players_dict = players_dict
     )
 
 #トップページ
 @app.route('/')
 def index():
-    players, ranks, game_data, now_matches, end_game, no_matches = gm.data_for_index()
+    players, ranks, game_data, now_matches, end_game, no_matches, players_dict = gm.data_for_index()
     return render_template(
         'index.html',
         players=players,
@@ -32,7 +33,8 @@ def index():
         game_data=game_data,
         now_matches=now_matches,
         end_game=end_game,
-        no_matches = no_matches
+        no_matches = no_matches,
+        players_dict = players_dict
     )
 
 @app.route('/add_player')

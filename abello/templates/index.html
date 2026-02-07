@@ -149,7 +149,7 @@
             name="winner_{{ loop.index0 }}"
             value="{{ player['player1'] }}"
           />
-          <label for="player1_{{ loop.index0 }}">{{ player['player1'] }}</label>
+          <label for="player1_{{ loop.index0 }}">{{ players_dict[player['player1']]['name'] }}</label>
 
           <p id="vs-text">VS</p>
 
@@ -159,7 +159,7 @@
             name="winner_{{ loop.index0 }}"
             value="{{ player['player2'] }}"
           />
-          <label for="player2_{{ loop.index0 }}">{{ player['player2'] }}</label>
+          <label for="player2_{{ loop.index0 }}">{{ players_dict[player['player2']]['name'] }}</label>
 
           <input
             type="text"

@@ -77,8 +77,8 @@
     {% for match in now_matches %}
     <table border="1">
       <tr>
-        <td>{{ match.player1 }}</td>
-        <td>{{ match.player2 }}</td>
+        <td>{{ players_dict[match.player1]['name'] }}</td>
+        <td>{{ players_dict[match.player2]['name'] }}</td>
         <td>
           {% if (match.winner == "PLAYING") %}
           <a
@@ -99,7 +99,7 @@
     {% for match in no_matches %}
     <table border="1">
       <tr>
-        <td>{{ match.player1 }}</td>
+        <td>{{ players_dict[match.player1]['name'] }}</td>
         <td>{{ match.winner }}</td>
         <td>
           <a
