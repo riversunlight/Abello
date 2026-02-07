@@ -29,6 +29,7 @@ class GameManager():
 
         person_results = []
         result_data = self.result_model.person_data(player_id)
+        player_datas = self.player_model.get_player_data(player_id)
         for row in person_result_data:
             my_id = 1
             tmp = {}
@@ -42,8 +43,8 @@ class GameManager():
         total_win = result_data["win"]
         total_lose = result_data["lose"]
         total_stone = result_data["stone_diff"]
-        
-        return person_results, total_win, total_lose, total_stone
+        name = player_datas["name"]
+        return person_results, total_win, total_lose, total_stone, name
     
     def data_for_index(self):
         players = self.player_model.all()
@@ -169,7 +170,7 @@ class GameManager():
         # 順位順にsort(比較関数作ってやる)
         players = sorted(players, key=cmp_to_key(self.matcher.comp))
         if len(players) % 2 == 1:
-            players.append({'name': "不戦勝", 'win': 0, 'lose': 100, 'stone_diff': -1000})
+            players.append({'player_id': "不戦勝", 'win': 0, 'lose': 100, 'stone_diff': -1000})
     
         players_id = [0 for i in range(0, (len(players)))]
         #ここまでの工夫で遅刻早退対応!!(入力受け取り)

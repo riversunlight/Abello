@@ -188,9 +188,10 @@ def game_input():
 def person_result():
     player_id = int(request.args.get('player_id'))
 
-    person_results, total_win, total_lose, total_stone = gm.person_result(player_id)
+    person_results, total_win, total_lose, total_stone, name = gm.person_result(player_id)
     return render_template(
         'person_result.html',
+        name=name,
         person_results=person_results,
         player_id=player_id,
         win=total_win,
