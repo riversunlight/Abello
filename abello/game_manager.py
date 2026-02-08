@@ -90,6 +90,9 @@ class GameManager():
             players_dict[player_id] = {'name': name}
 
         ranks = sorted(ranks, key=cmp_to_key(self.matcher.comp))
+        ranks_dict = {}
+        for i in range(len(ranks)):
+            ranks_dict[ranks[i]['player_id']] = i
 
         game_data = {'round': self.round, 'during_game': self.during_game}
         for row in _match_data:
@@ -99,6 +102,8 @@ class GameManager():
                 now_matches.append({'player1': row[0], 'player2': row[1], 'winner': row[2]})
                 if row[2] != "PLAYING":
                     end_game += 1
+
+        now_matches = sorted(now_matches, key=cmp_to_key(lambda a, b: self.matcher.comp_game(a, b, ranks_dict)))
         return players, ranks, game_data, now_matches, end_game, no_matches, players_dict
     
     def data_for_hand(self):
