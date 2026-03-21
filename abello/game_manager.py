@@ -44,6 +44,16 @@ class GameManager():
         total_lose = result_data["lose"]
         total_stone = result_data["stone_diff"]
         name = player_datas["name"]
+        match_res = self.game_result_model.get_now_game(self.round, player_id)
+        print(match_res)
+        if len(match_res) == 1:
+            if match_res[0][1] == player_id:
+                total_stone += match_res[0][3]
+                total_win += 1
+            else:
+                total_lose += 1
+                total_stone -= match_res[0][3]
+
         return person_results, total_win, total_lose, total_stone, name
     
     def data_for_index(self):
@@ -77,11 +87,11 @@ class GameManager():
             stone_diff = person_result['stone_diff']
             status = player_data['status']
             finish_game = 0
-            if name in winners:
+            if player_id in winners:
                 win += 1
                 stone_diff += winners[player_id]
                 finish_game = 1
-            if name in losers:
+            if player_id in losers:
                 lose += 1
                 stone_diff -= losers[player_id]
                 finish_game = 1
@@ -99,10 +109,13 @@ class GameManager():
             if row[2] == "不戦勝" or row[2] == "不戦敗":
                 no_matches.append({'player1': row[0], 'player2': row[1], 'winner': row[2]})
             else:
-                now_matches.append({'player1': row[0], 'player2': row[1], 'winner': row[2]})
+                stone = 0
                 if row[2] != "PLAYING":
                     end_game += 1
-
+                    stone = winners[row[2]]
+                now_matches.append({'player1': row[0], 'player2': row[1], 'winner': row[2], 'stone':stone})
+                
+        print(ranks_dict)
         now_matches = sorted(now_matches, key=cmp_to_key(lambda a, b: self.matcher.comp_game(a, b, ranks_dict)))
         return players, ranks, game_data, now_matches, end_game, no_matches, players_dict
     
@@ -262,13 +275,21 @@ class GameManager():
         stone_diff = data[0][3]
 
         return round, {'winner': prev_win, 'loser': prev_lose, 'stone_diff': stone_diff}
-
+    def name_list(self):
+        res = {}
+        players = self.player_model.all()
+        print(players)
+        for row in players:
+            res[row['player_id']] = row['name']
+        return res
     def delete_match(self, player1_id, player2_id):
-        data = self.game_result_model.get_game(player1_id, player2_id)
+        print(player1_id, player2_id)
+        data = self.game_result_model.get_now_game(self.round, player1_id)
+        print("d", data)
         if len(data) == 1:
             prev_win = data[0][1]
             prev_lose = data[0][2]
-            self.game_result_model.delete_game(prev_win, prev_lose)
+            self.game_result_model.delete_now_game(self.round, prev_win)
             self.now_match_model.reset_match(player1_id, player2_id)
 
     def get_status(self, player_id):
@@ -370,7 +391,6 @@ class GameManager():
         lose_id = "?"
         round = self.round
         game_data = self.now_match_model.get_data(win_id)
-        print("game_input", game_data)
         for row in game_data:
             if row[0]==win_id:
                 lose_id=row[1]
@@ -382,15 +402,16 @@ class GameManager():
             prev_win = data[0][1]
             prev_lose = data[0][2]
             prev_stone_diff = data[0][3]
-            self.game_result_model.delete_game(self, prev_win, lose_id)
+            self.game_result_model.delete_game(prev_win, lose_id)
 
         self.game_result_model.add(round, win_id, lose_id, stone_diff)
         self.now_match_model.set_winner(win_id)
+        _now_match = self.now_match_model.all()
+        print(_now_match)
 
     def swap_matches(self, player_ids):
         self.now_match_model.swap_matches(player_ids)
         
-
     @property
     def during_game(self):
         return self.now_match_model.during_game()

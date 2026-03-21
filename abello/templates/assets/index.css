@@ -159,6 +159,75 @@
   justify-content: center;
 }
 
+.noBattleCard {
+  width: calc(100% - 30px);
+  align-items: center;
+  padding-block: 10px;
+  background-color: #f3f3f3;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 12px 24px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+  margin: 5px 15px;
+
+  #vs-text {
+    margin-inline: 20px;
+    font-size: 24px;
+  }
+
+  input[type="text"] {
+    width: 150px;
+    padding: 10px 30px;
+    text-align: center;
+    font-size: 24px;
+    border: none;
+    margin-block: 5px;
+    margin-right: auto;
+  }
+
+  input[type="radio"] {
+    display: none;
+  }
+
+  /* 対戦カードのデフォルトスタイル (初期状態: スカイブルー) */
+  input[type="radio"] + label {
+    display: flex;
+    align-items: center;
+    font-size: 32px;
+    padding: 10px 100px;
+    border: 2px solid;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  input[type="radio"]:nth-of-type(1) + label {
+    margin-left: auto;
+  }
+  input[type="radio"]:nth-of-type(2) + label {
+    margin-right: 30px;
+  }
+
+  /* 勝者 (選択された場合のスタイル: ゴールド) */
+  input[type="radio"]:checked + label {
+    background-color: #2ecc71;
+    color: white;
+    border-color: #27ae60;
+  }
+
+  /* 敗者 (非選択状態: ライトグレー) */
+  input[type="radio"]:not(:checked) + label {
+    background-color: #bdc3c7; /* 敗者: ライトグレー */
+    color: #34495e;
+    border-color: #95a5a6;
+  }
+
+  /* ホバー時のエフェクト */
+  input[type="radio"] + label:hover {
+    border-color: #2980b9;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+}
+
+
 .battleCard {
   width: calc(100% - 30px);
   align-items: center;
@@ -251,6 +320,60 @@ button#rematching-button {
   border-radius: 8px;
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button.reset {
+  
+  display: inline-block;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  background-color: green;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button.send {
+  display: inline-block;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  background-color: green;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+  }
+
+  #battle, #ranking {
+    width: 100%;
+  }
+
+  .battleCard {
+    flex-wrap: wrap;
+  }
+
+  .battleCard input[type="radio"] + label {
+    font-size: 16px;
+    padding: 10px 20px;
+  }
+
+  .battleCard input[type="text"] {
+    width: 100px;
+  }
+
+  button {
+    width: 100%;
+  }
 }
 
 button#startovermatching-button {

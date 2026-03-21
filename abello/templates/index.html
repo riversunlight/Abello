@@ -2,6 +2,7 @@
 
 <html lang="ja">
   <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8" />
     <title>Abello</title>
 
@@ -141,15 +142,15 @@
         {% else %}
         <h2>~第{{ game_data.round }}回戦~</h2>
         <h3>↓　勝った方のカードをクリック　↓</h3>
-        {% for player in now_matches %}
-        <div class="battleCard">
+        {% for match in now_matches %}
+        <div class="battleCard" data-battle-finish="{{ 'done' if match['winner'] != 'PLAYING' else 'none' }}">
           <input
             type="radio"
             id="player1_{{ loop.index0 }}"
             name="winner_{{ loop.index0 }}"
-            value="{{ player['player1'] }}"
+            value="{{ match['player1'] }}"
           />
-          <label for="player1_{{ loop.index0 }}">{{ players_dict[player['player1']]['name'] }}</label>
+          <label for="player1_{{ loop.index0 }}">{{ players_dict[match['player1']]['name'] }}</label>
 
           <p id="vs-text">VS</p>
 
@@ -157,24 +158,62 @@
             type="radio"
             id="player2_{{ loop.index0 }}"
             name="winner_{{ loop.index0 }}"
-            value="{{ player['player2'] }}"
+            value="{{ match['player2'] }}"
           />
-          <label for="player2_{{ loop.index0 }}">{{ players_dict[player['player2']]['name'] }}</label>
+          <label for="player2_{{ loop.index0 }}">{{ players_dict[match['player2']]['name'] }}</label>
 
-          <input
-            type="text"
-            class="stone-diff"
-            name="stone-diff"
-            placeholder="石差を入力"
-          />
+          {% if (match['winner'] == "PLAYING") %}
+            <input
+              type="text"
+              class="stone-diff"
+              name="stone-diff"
+              placeholder="石差を入力"
+            />
+          {% else %}
+            {{players_dict[match['winner']]['name']}}勝利 {{match['stone']}}石
+          {% endif %}
+
+          {% if (match.winner == "PLAYING") %}
+            <button id="send-{{loop.index0}}" class="send" onclick="sendGameInfo( {{ loop.index0 }} )">
+              結果送信
+            </button>
+          {% else %}
+            <button id="reset-{{loop.index0}}" class="reset" onclick="deleteGame( {{ match['player1']}}, {{match['player2'] }})">
+              リセット
+            </button>
+          {% endif %}
         </div>
         {% endfor %}
-        <button id="rematching-button" onclick="reMatching()">
-          次の試合へ
-        </button>
+
+        {% for match in no_matches %}
+          
+          <div class="noBattleCard" data-battle-finish="{{ 'done' if match['winner'] != 'PLAYING' else 'none' }}">
+            {% if match['player1'] != "-" %}
+                <label for="no_player1_{{ loop.index0 }}">{{ players_dict[match['player1']]['name'] }}</label>
+            {% else %}
+                <label for="no_player1_{{ loop.index0 }}">{{ match['winner'] }}</label>
+            {% endif %}
+            
+            {% if match['player2'] != "-" %}
+                <label for="no_player2_{{ loop.index0 }}">{{ players_dict[match['player2']]['name'] }}</label>
+            {% else %}
+                <label for="no_player2_{{ loop.index0 }}">{{ match['winner'] }}</label>
+            {% endif %}
+        
+          </div>
+        {% endfor %}
+
+        {% if end_game == now_matches |length %}
+          <button id="rematching-button" onclick="reMatching()">
+            次の試合へ
+          </button>
+        {% endif %}
+        {% if end_game == 0 %}
         <button id="startovermatching-button" onclick="startOverMatching()">
           マッチングをやり直す
         </button>
+        {% endif %}
+
 
         <!--<button id="finishmatching-button" onclick="finishMatching()">マッチング終了</button>-->
 
@@ -186,11 +225,18 @@
             const battleCards = document.getElementsByClassName("battleCard");
 
             for (const card of battleCards) {
+              const status = card.dataset.battleFinish;
+
+              if (status === "done") {
+                console.log("このカードは完了済み");
+                continue;
+              }
+
               if (
                 card.querySelector('input[type="radio"]:checked')?.value ===
                 undefined
               ) {
-                alert("勝敗が入力されていない対戦カードがあります");
+                alert("勝敗が入力されてません");
                 return;
               }
 
@@ -219,6 +265,12 @@
             }
 
             for (const card of battleCards) {
+              const status = card.dataset.battleFinish;
+
+              if (status === "done") {
+                console.log("このカードは完了済み");
+                continue;
+              }
               const winner = card.querySelector(
                 'input[type="radio"]:checked',
               )?.value;
@@ -258,6 +310,101 @@
             }
           }
 
+          async function sendGameInfo(index) {
+            const apiUrl = "/game_input";
+            
+            const element = document.getElementById("battle");
+
+            const card = document.getElementsByClassName("battleCard")[index];
+
+
+            if (
+              card.querySelector('input[type="radio"]:checked')?.value ===
+              undefined
+            ) {
+              alert("勝敗が入力されていない対戦カードがあります");
+              return;
+            }
+
+            if (
+              card.querySelector('input[type="text"]')?.value.trim() === ""
+            ) {
+              alert("石数が未入力の対戦カードがあります");
+              return;
+            }
+
+            const stone_diff = Number(
+              card.querySelector('input[type="text"]')?.value,
+            );
+
+            if (
+              !(
+                0 <= stone_diff &&
+                stone_diff <= 64 &&
+                stone_diff % 2 === 0 &&
+                Number.isInteger(stone_diff)
+              )
+            ) {
+              alert("石数は0以上64以下の偶数でなければいけません");
+              return;
+            }
+
+            const winner = card.querySelector(
+              'input[type="radio"]:checked',
+            )?.value;
+              card.querySelector('input[type="text"]')?.value;
+
+            const data = {
+              winner: winner,
+              stone_diff: stone_diff,
+            };
+
+            try {
+              const response = await fetch(apiUrl, {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/x-www-form-urlencoded",
+                },
+                body: new URLSearchParams(data).toString(),
+              });
+
+             if (!response.ok) {
+                console.error(`APIエラー: ${response.statusText}`);
+              } else {
+                console.log(`送信成功: ${JSON.stringify(data)}`);
+                location.reload();
+              }
+            } catch (error) {
+              console.error(`送信失敗: ${error.message}`);
+            }
+          }
+
+          async function deleteGame(player1, player2) {
+            const apiUrl = "/delete_game";
+            const data = {
+              player_id1: player1,
+              player_id2: player2
+            };
+            try {
+              const response = await fetch(apiUrl, {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/x-www-form-urlencoded",
+                },
+                body: new URLSearchParams(data).toString(),
+              });
+
+             if (!response.ok) {
+                console.error(`APIエラー: ${response.statusText}`);
+              } else {
+                console.log(`送信成功: ${JSON.stringify(data)}`);
+                location.reload()
+              }
+            } catch (error) {
+              console.error(`送信失敗: ${error.message}`);
+            }
+          }
+
           async function startOverMatching() {
             const apiUrl = "http://127.0.0.1:5000/game_input";
 
@@ -288,7 +435,7 @@
             <th>状態</th>
           </tr>
           {% for player in ranks %}
-          <tr {% if player.end_game==1 %} bgcolor="#aa0000" {% endif %}>
+          <tr>
             <td>{{ player.name }}</td>
             <td>{{ player.win }}</td>
             <td>{{ player.lose }}</td>
@@ -327,7 +474,7 @@
             <td>{{ player.block }}</td>
             <td>{{ player.grade }}</td>
             <td>
-              <a href="{{ url_for('change_status', name=player.name)}}"
+              <a href="{{ url_for('change_status', player_id=player.id)}}"
                 >{{ player.status }}</a
               >
             </td>

@@ -167,8 +167,10 @@ def change_status():
 
 @app.route('/change_status_exe', methods=["POST"])
 def change_status_exe():
-    player_id = int(request.form['player_id'])
+    player_id = int(request.args.get('player_id'))
+    print(player_id)
     status = request.form['status']
+    print(status)
     gm.change_status_exe(player_id, status)
     return redirect(url_for('index'))
 
@@ -176,6 +178,13 @@ def change_status_exe():
 def delete_match():
     player_id1 = int(request.args.get('player_id1'))
     player_id2 = int(request.args.get('player_id2'))
+    gm.delete_match(player_id1, player_id2)
+    return redirect(url_for('index'))
+
+@app.route('/delete_game', methods=["POST"])
+def delete_game():
+    player_id1 = int(request.form['player_id1'])
+    player_id2 = int(request.form['player_id2'])
     gm.delete_match(player_id1, player_id2)
     return redirect(url_for('index'))
 
@@ -191,6 +200,8 @@ def person_result():
     player_id = int(request.args.get('player_id'))
 
     person_results, total_win, total_lose, total_stone, name = gm.person_result(player_id)
+    name_list = gm.name_list()
+    print(name_list)
     return render_template(
         'person_result.html',
         name=name,
@@ -198,7 +209,8 @@ def person_result():
         player_id=player_id,
         win=total_win,
         lose=total_lose,
-        stone_diff=total_stone
+        stone_diff=total_stone,
+        name_list=name_list
     )
 
 @app.route('/reset_conf')

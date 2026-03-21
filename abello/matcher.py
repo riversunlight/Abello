@@ -21,13 +21,13 @@ class Matcher:
         rank_game2 = [rank_dict[b['player1']], rank_dict[b['player2']]]
         mn_game1 = min(rank_game1)
         mn_game2 = min(rank_game2)
-        if mn_game1 > mn_game2:
+        if mn_game1 < mn_game2:
             return -1
-        elif mn_game1 < mn_game2:
+        elif mn_game1 > mn_game2:
             return 1
         else:
-            mx_game1 = min(rank_game1)
-            mx_game2 = min(rank_game2)
+            mx_game1 = max(rank_game1)
+            mx_game2 = max(rank_game2)
             if mx_game1 > mn_game2:
                 return -1
             elif mx_game1 < mn_game2:
