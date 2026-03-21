@@ -10,44 +10,44 @@ class ResultModel():
 
         res = []
         for row in data:
-            res.append({'name': row[0], 'win': row[1], 'lose': row[2], 'stone_diff': row[3]})
+            res.append({'player_id': row[0], 'win': row[1], 'lose': row[2], 'stone_diff': row[3]})
         return res
     
-    def person_data(self, name):
+    def person_data(self, player_id):
         con = sqlite3.connect(self.DATABASE)
-        data = con.execute("SELECT * FROM results WHERE name = ?", [name]).fetchall()
+        data = con.execute("SELECT * FROM results WHERE player_id = ?", [player_id]).fetchall()
         con.close()
         if len(data) == 0:
             return None
         data = data[0]
 
-        return {'name': data[0], 'win': data[1], 'lose': data[2], 'stone_diff': data[3]}
+        return {'player_id': data[0], 'win': data[1], 'lose': data[2], 'stone_diff': data[3]}
     
-    def update_data(self, name, isWin, stone_diff):
+    def update_data(self, player_id, isWin, stone_diff):
         con = sqlite3.connect(self.DATABASE)
         if isWin:
-            con.execute('UPDATE results SET win = win + 1 WHERE name = ?', [name])
-            con.execute('UPDATE results SET stone_diff = stone_diff + ? WHERE name = ?', [stone_diff, name])
+            con.execute('UPDATE results SET win = win + 1 WHERE player_id = ?', [player_id])
+            con.execute('UPDATE results SET stone_diff = stone_diff + ? WHERE player_id = ?', [stone_diff, player_id])
         else:
-            con.execute('UPDATE results SET lose = lose + 1 WHERE name = ?', [name])
-            con.execute('UPDATE results SET stone_diff = stone_diff - ? WHERE name = ?', [stone_diff, name])
+            con.execute('UPDATE results SET lose = lose + 1 WHERE player_id = ?', [player_id])
+            con.execute('UPDATE results SET stone_diff = stone_diff - ? WHERE player_id = ?', [stone_diff, player_id])
         con.commit()
         con.close()
 
-    def fix_data(self, name, isWin, stone_diff):
+    def fix_data(self, player_id, isWin, stone_diff):
         con = sqlite3.connect(self.DATABASE)
         if isWin:
-            con.execute('UPDATE results SET win = win - 1 WHERE name = ?', [name])
-            con.execute('UPDATE results SET stone_diff = stone_diff - ? WHERE name = ?', [stone_diff, name])
+            con.execute('UPDATE results SET win = win - 1 WHERE player_id = ?', [player_id])
+            con.execute('UPDATE results SET stone_diff = stone_diff - ? WHERE player_id = ?', [stone_diff, player_id])
         else:
-            con.execute('UPDATE results SET lose = lose - 1 WHERE name = ?', [name])
-            con.execute('UPDATE results SET stone_diff = stone_diff + ? WHERE name = ?', [stone_diff, name])
+            con.execute('UPDATE results SET lose = lose - 1 WHERE player_id = ?', [player_id])
+            con.execute('UPDATE results SET stone_diff = stone_diff + ? WHERE player_id = ?', [stone_diff, player_id])
         con.commit()
         con.close()
     
-    def add(self, name):
+    def add(self, player_id):
         con = sqlite3.connect(self.DATABASE)
-        con.execute('INSERT INTO results VALUES(?, ?, ?, ?)', [name, 0, 0, 0])
+        con.execute('INSERT INTO results VALUES(?, ?, ?, ?)', [player_id, 0, 0, 0])
         con.commit()
         con.close()
 

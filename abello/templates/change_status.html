@@ -8,7 +8,7 @@
   <body>
     <h1>{{name}}さんの状態変更</h1>
     現在の状態: {{ status }}
-    <form method="post" action="{{ url_for('change_status_exe') }}">
+    <form method="post" action="{{ url_for('change_status_exe', player_id=player_id) }}">
       <select name="status">
         <option value="参加">参加</option>
         <option value="不参加">不参加</option>

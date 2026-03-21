@@ -9,3 +9,4 @@ create_players_table()
 create_results_table()
 create_new_matches_table()
 create_new_game_result_table()
+

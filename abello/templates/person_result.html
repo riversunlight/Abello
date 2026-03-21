@@ -18,7 +18,7 @@
       {% for battle in person_results%}
       <tr>
         <td>{{ battle.round }}</td>
-        <td>{{ battle.opponent }}</td>
+        <td>{{ name_list[battle.opponent] }}</td>
         <td>{{ battle.win }}</td>
         <td>{{ battle.stone }}</td>
         <td>

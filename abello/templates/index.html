@@ -1,248 +1,431 @@
-<!DOCTYPE html>
+<!doctype html>
 
 <html lang="ja">
   <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8" />
     <title>Abello</title>
 
-    <link rel="stylesheet" href="./assets/index.css">
-    <img id="logo" src="./assets/Abello_logo.png" alt="Abello_logo">
+    <link rel="stylesheet" href="./assets/index.css" />
+    <img id="logo" src="./assets/Abello_logo.png" alt="Abello_logo" />
   </head>
   <body>
     <div class="container">
       <div id="battle">
         <!--ここに画面左側-->
         {% if (game_data.round == 0) %}
-          <h2>~開始準備中~</h2>
-          <button class="register-button" onclick="openModal()">選手登録</button>
-          <button id="start-matching-button" onclick="startMatching()">マッチング開始</button>
-  
-          <!--選手登録ウィンドウ-->
-          <div id="registerModal" class="modal">
-            <div class="modal-content">
-                <span class="close" onclick="closeModal()">&times;</span>
-                <h2>選手登録</h2>
-                <form method="post" action="{{ url_for('register') }}">
-                    <table border="1">
-                        <tr>
-                            <th>氏名</th>
-                            <th>略称</th>
-                            <th>都道府県</th>
-                            <th>段級位</th>
-                        </tr>
-                        <tr>
-                            <td><input type="text" name="name" required /></td>
-                            <td><input type="text" name="short" required /></td>
-                            <td>
-                                <select name="block">
-                                    <option value="北海道">北海道</option>
-                                    <option value="青森">青森</option>
-                                    <option value="岩手">岩手</option>
-                                    <option value="宮城">宮城</option>
-                                    <option value="秋田">秋田</option>
-                                    <option value="山形">山形</option>
-                                    <option value="福島">福島</option>
-                                    <option value="茨城">茨城</option>
-                                    <option value="栃木">栃木</option>
-                                    <option value="群馬">群馬</option>
-                                    <option value="埼玉">埼玉</option>
-                                    <option value="千葉">千葉</option>
-                                    <option value="東京">東京</option>
-                                    <option value="山梨">山梨</option>
-                                    <option value="長野">長野</option>
-                                    <option value="新潟">新潟</option>
-                                    <option value="富山">富山</option>
-                                    <option value="石川">石川</option>
-                                    <option value="福井">福井</option>
-                                    <option value="岐阜">岐阜</option>
-                                    <option value="静岡">静岡</option>
-                                    <option value="愛知">愛知</option>
-                                    <option value="三重">三重</option>
-                                    <option value="滋賀">滋賀</option>
-                                    <option value="京都">京都</option>
-                                    <option value="大阪">大阪</option>
-                                    <option value="兵庫">兵庫</option>
-                                    <option value="奈良">奈良</option>
-                                    <option value="和歌山">和歌山</option>
-                                    <option value="鳥取">鳥取</option>
-                                    <option value="島根">島根</option>
-                                    <option value="岡山">岡山</option>
-                                    <option value="広島">広島</option>
-                                    <option value="山口">山口</option>
-                                    <option value="徳島">徳島</option>
-                                    <option value="香川">香川</option>
-                                    <option value="愛媛">愛媛</option>
-                                    <option value="高知">高知</option>
-                                    <option value="福岡">福岡</option>
-                                    <option value="佐賀">佐賀</option>
-                                    <option value="長崎">長崎</option>
-                                    <option value="熊本">熊本</option>
-                                    <option value="大分">大分</option>
-                                    <option value="宮崎">宮崎</option>
-                                    <option value="鹿児島">鹿児島</option>
-                                    <option value="沖縄">沖縄</option>
-                                </select>
-                            </td>
-                            <td>
-                                <select name="grade">
-                                    <option value="九段">九段</option>
-                                    <option value="八段">八段</option>
-                                    <option value="七段">七段</option>
-                                    <option value="六段">六段</option>
-                                    <option value="五段">五段</option>
-                                    <option value="四段">四段</option>
-                                    <option value="三段">三段</option>
-                                    <option value="二段">二段</option>
-                                    <option value="初段">初段</option>
-                                    <option value="1級">1級</option>
-                                    <option value="2級">2級</option>
-                                    <option value="3級">3級</option>
-                                    <option value="4級">4級</option>
-                                    <option value="5級">5級</option>
-                                    <option value="なし">なし</option>
-                                </select>
-                            </td>
-                        </tr>
-                    </table>
-                    <input type="submit" value="登録" class="submit-button" />
-                </form>
-            </div>
+        <h2>~開始準備中~</h2>
+        <button class="register-button" onclick="openModal()">選手登録</button>
+        <button id="start-matching-button" onclick="startMatching()">
+          マッチング開始
+        </button>
+
+        <!--選手登録ウィンドウ-->
+        <div id="registerModal" class="modal">
+          <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>選手登録</h2>
+            <form method="post" action="{{ url_for('register') }}">
+              <table border="1">
+                <tr>
+                  <th>氏名</th>
+                  <th>略称</th>
+                  <th>都道府県</th>
+                  <th>段級位</th>
+                </tr>
+                <tr>
+                  <td><input type="text" name="name" required /></td>
+                  <td><input type="text" name="short" required /></td>
+                  <td>
+                    <select name="block">
+                      <option value="北海道">北海道</option>
+                      <option value="青森">青森</option>
+                      <option value="岩手">岩手</option>
+                      <option value="宮城">宮城</option>
+                      <option value="秋田">秋田</option>
+                      <option value="山形">山形</option>
+                      <option value="福島">福島</option>
+                      <option value="茨城">茨城</option>
+                      <option value="栃木">栃木</option>
+                      <option value="群馬">群馬</option>
+                      <option value="埼玉">埼玉</option>
+                      <option value="千葉">千葉</option>
+                      <option value="東京">東京</option>
+                      <option value="山梨">山梨</option>
+                      <option value="長野">長野</option>
+                      <option value="新潟">新潟</option>
+                      <option value="富山">富山</option>
+                      <option value="石川">石川</option>
+                      <option value="福井">福井</option>
+                      <option value="岐阜">岐阜</option>
+                      <option value="静岡">静岡</option>
+                      <option value="愛知">愛知</option>
+                      <option value="三重">三重</option>
+                      <option value="滋賀">滋賀</option>
+                      <option value="京都">京都</option>
+                      <option value="大阪">大阪</option>
+                      <option value="兵庫">兵庫</option>
+                      <option value="奈良">奈良</option>
+                      <option value="和歌山">和歌山</option>
+                      <option value="鳥取">鳥取</option>
+                      <option value="島根">島根</option>
+                      <option value="岡山">岡山</option>
+                      <option value="広島">広島</option>
+                      <option value="山口">山口</option>
+                      <option value="徳島">徳島</option>
+                      <option value="香川">香川</option>
+                      <option value="愛媛">愛媛</option>
+                      <option value="高知">高知</option>
+                      <option value="福岡">福岡</option>
+                      <option value="佐賀">佐賀</option>
+                      <option value="長崎">長崎</option>
+                      <option value="熊本">熊本</option>
+                      <option value="大分">大分</option>
+                      <option value="宮崎">宮崎</option>
+                      <option value="鹿児島">鹿児島</option>
+                      <option value="沖縄">沖縄</option>
+                    </select>
+                  </td>
+                  <td>
+                    <select name="grade">
+                      <option value="九段">九段</option>
+                      <option value="八段">八段</option>
+                      <option value="七段">七段</option>
+                      <option value="六段">六段</option>
+                      <option value="五段">五段</option>
+                      <option value="四段">四段</option>
+                      <option value="三段">三段</option>
+                      <option value="二段">二段</option>
+                      <option value="初段">初段</option>
+                      <option value="1級">1級</option>
+                      <option value="2級">2級</option>
+                      <option value="3級">3級</option>
+                      <option value="4級">4級</option>
+                      <option value="5級">5級</option>
+                      <option value="なし">なし</option>
+                    </select>
+                  </td>
+                </tr>
+              </table>
+              <input type="submit" value="登録" class="submit-button" />
+            </form>
           </div>
-  
-          <script>
-              function openModal() {
-                  document.getElementById("registerModal").style.display = "block";
-              }
-  
-              function closeModal() {
-                  document.getElementById("registerModal").style.display = "none";
-              }
+        </div>
 
-              async function startMatching() {
-                const apiUrl = 'http://127.0.0.1:5000/matching';
-                const element = document.getElementById( 'battle' );
-                
-                try {
-                    const response = await fetch(apiUrl);
+        <script>
+          function openModal() {
+            document.getElementById("registerModal").style.display = "block";
+          }
 
-                    location.reload();
-                } catch (error) {
-                    element.textContent = `error: ${error.message}`;
-                }
-              }
+          function closeModal() {
+            document.getElementById("registerModal").style.display = "none";
+          }
 
-              async function reMatching() {
-                const apiUrl = 'http://127.0.0.1:5000/matching';
-              }
-          </script>
-        
+          async function startMatching() {
+            const apiUrl = "http://127.0.0.1:5000/matching";
+            const element = document.getElementById("battle");
+
+            try {
+              const response = await fetch(apiUrl);
+
+              location.reload();
+            } catch (error) {
+              element.textContent = `error: ${error.message}`;
+            }
+          }
+
+          async function reMatching() {
+            const apiUrl = "http://127.0.0.1:5000/matching";
+          }
+        </script>
+
         {% else %}
         <h2>~第{{ game_data.round }}回戦~</h2>
         <h3>↓　勝った方のカードをクリック　↓</h3>
-        {% for player in now_matches %}
-          <div class="battleCard">
-            <input type="radio" id="player1_{{ loop.index0 }}" name="winner_{{ loop.index0 }}" value="{{ player['player1'] }}">
-            <label for="player1_{{ loop.index0 }}">{{ player['player1'] }}</label>
+        {% for match in now_matches %}
+        <div class="battleCard" data-battle-finish="{{ 'done' if match['winner'] != 'PLAYING' else 'none' }}">
+          <input
+            type="radio"
+            id="player1_{{ loop.index0 }}"
+            name="winner_{{ loop.index0 }}"
+            value="{{ match['player1'] }}"
+          />
+          <label for="player1_{{ loop.index0 }}">{{ players_dict[match['player1']]['name'] }}</label>
 
-            <p id="vs-text">VS</p>
+          <p id="vs-text">VS</p>
+
+          <input
+            type="radio"
+            id="player2_{{ loop.index0 }}"
+            name="winner_{{ loop.index0 }}"
+            value="{{ match['player2'] }}"
+          />
+          <label for="player2_{{ loop.index0 }}">{{ players_dict[match['player2']]['name'] }}</label>
+
+          {% if (match['winner'] == "PLAYING") %}
+            <input
+              type="text"
+              class="stone-diff"
+              name="stone-diff"
+              placeholder="石差を入力"
+            />
+          {% else %}
+            {{players_dict[match['winner']]['name']}}勝利 {{match['stone']}}石
+          {% endif %}
+
+          {% if (match.winner == "PLAYING") %}
+            <button id="send-{{loop.index0}}" class="send" onclick="sendGameInfo( {{ loop.index0 }} )">
+              結果送信
+            </button>
+          {% else %}
+            <button id="reset-{{loop.index0}}" class="reset" onclick="deleteGame( {{ match['player1']}}, {{match['player2'] }})">
+              リセット
+            </button>
+          {% endif %}
+        </div>
+        {% endfor %}
+
+        {% for match in no_matches %}
+          
+          <div class="noBattleCard" data-battle-finish="{{ 'done' if match['winner'] != 'PLAYING' else 'none' }}">
+            {% if match['player1'] != "-" %}
+                <label for="no_player1_{{ loop.index0 }}">{{ players_dict[match['player1']]['name'] }}</label>
+            {% else %}
+                <label for="no_player1_{{ loop.index0 }}">{{ match['winner'] }}</label>
+            {% endif %}
             
-            <input type="radio" id="player2_{{ loop.index0 }}" name="winner_{{ loop.index0 }}" value="{{ player['player2'] }}">
-            <label for="player2_{{ loop.index0 }}">{{ player['player2'] }}</label>
-
-            <input type="text" class="stone-diff" name="stone-diff" placeholder="石差を入力">
+            {% if match['player2'] != "-" %}
+                <label for="no_player2_{{ loop.index0 }}">{{ players_dict[match['player2']]['name'] }}</label>
+            {% else %}
+                <label for="no_player2_{{ loop.index0 }}">{{ match['winner'] }}</label>
+            {% endif %}
+        
           </div>
         {% endfor %}
-        <button id="rematching-button" onclick="reMatching()">次の試合へ</button>
-        <button id="startovermatching-button" onclick="startOverMatching()">マッチングをやり直す</button>
+
+        {% if end_game == now_matches |length %}
+          <button id="rematching-button" onclick="reMatching()">
+            次の試合へ
+          </button>
+        {% endif %}
+        {% if end_game == 0 %}
+        <button id="startovermatching-button" onclick="startOverMatching()">
+          マッチングをやり直す
+        </button>
+        {% endif %}
+
 
         <!--<button id="finishmatching-button" onclick="finishMatching()">マッチング終了</button>-->
 
         <script>
-            async function reMatching() {
-              const apiUrl = 'http://127.0.0.1:5000/game_input';
-              const element = document.getElementById( 'battle' );
+          async function reMatching() {
+            const apiUrl = "http://127.0.0.1:5000/game_input";
+            const element = document.getElementById("battle");
 
-              const battleCards = document.getElementsByClassName( 'battleCard' );
+            const battleCards = document.getElementsByClassName("battleCard");
 
-              for ( const card of battleCards ) {
-                if ( card.querySelector('input[type="radio"]:checked')?.value === undefined ) {
-                  alert( "勝敗が入力されていない対戦カードがあります" );
-                  return;
-                }
+            for (const card of battleCards) {
+              const status = card.dataset.battleFinish;
 
-                if( card.querySelector( 'input[type="text"]' )?.value.trim() === "" ) {
-                  alert( "石数が未入力の対戦カードがあります" );
-                  return;
-                }
-
-                const stone_diff = Number( card.querySelector( 'input[type="text"]' )?.value )
-
-                if( !( 0 <= stone_diff && stone_diff <= 64 && stone_diff % 2 === 0 && Number.isInteger( stone_diff ) ) ) {
-                  alert( "石数は0以上64以下の偶数でなければいけません" );
-                  return;
-                }
+              if (status === "done") {
+                console.log("このカードは完了済み");
+                continue;
               }
 
-              for ( const card of battleCards ) {
-                const winner = card.querySelector( 'input[type="radio"]:checked' )?.value;
-                const stone_diff = card.querySelector( 'input[type="text"]' )?.value;
-
-                const data = {
-                  winner: winner,
-                  stone_diff: stone_diff
-                };
-
-                try {
-                    const response = await fetch(apiUrl, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded',
-                        },
-                        body: new URLSearchParams( data ).toString(),
-                    });
-
-                    if (!response.ok) {
-                        console.error(`APIエラー: ${response.statusText}`);
-                    } else {
-                        console.log(`送信成功: ${JSON.stringify(data)}`);
-                    }
-                } catch (error) {
-                    console.error(`送信失敗: ${error.message}`);
-                }
+              if (
+                card.querySelector('input[type="radio"]:checked')?.value ===
+                undefined
+              ) {
+                alert("勝敗が入力されてません");
+                return;
               }
 
+              if (
+                card.querySelector('input[type="text"]')?.value.trim() === ""
+              ) {
+                alert("石数が未入力の対戦カードがあります");
+                return;
+              }
+
+              const stone_diff = Number(
+                card.querySelector('input[type="text"]')?.value,
+              );
+
+              if (
+                !(
+                  0 <= stone_diff &&
+                  stone_diff <= 64 &&
+                  stone_diff % 2 === 0 &&
+                  Number.isInteger(stone_diff)
+                )
+              ) {
+                alert("石数は0以上64以下の偶数でなければいけません");
+                return;
+              }
+            }
+
+            for (const card of battleCards) {
+              const status = card.dataset.battleFinish;
+
+              if (status === "done") {
+                console.log("このカードは完了済み");
+                continue;
+              }
+              const winner = card.querySelector(
+                'input[type="radio"]:checked',
+              )?.value;
+              const stone_diff =
+                card.querySelector('input[type="text"]')?.value;
+
+              const data = {
+                winner: winner,
+                stone_diff: stone_diff,
+              };
+
               try {
-                  const response = await fetch("http://127.0.0.1:5000/matching");
+                const response = await fetch(apiUrl, {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                  },
+                  body: new URLSearchParams(data).toString(),
+                });
 
-                  location.reload();
-                } catch (error) {
-                  element.textContent = `error: ${error.message}`;
+                if (!response.ok) {
+                  console.error(`APIエラー: ${response.statusText}`);
+                } else {
+                  console.log(`送信成功: ${JSON.stringify(data)}`);
                 }
+              } catch (error) {
+                console.error(`送信失敗: ${error.message}`);
+              }
             }
 
-            async function startOverMatching() {
-              const apiUrl = 'http://127.0.0.1:5000/game_input';
-        
-              try {
-                  const response = await fetch("http://127.0.0.1:5000/matching");
+            try {
+              const response = await fetch("http://127.0.0.1:5000/matching");
 
-                  location.reload();
-                } catch (error) {
-                  element.textContent = `error: ${error.message}`;
-                }
+              location.reload();
+            } catch (error) {
+              element.textContent = `error: ${error.message}`;
+            }
+          }
+
+          async function sendGameInfo(index) {
+            const apiUrl = "/game_input";
+            
+            const element = document.getElementById("battle");
+
+            const card = document.getElementsByClassName("battleCard")[index];
+
+
+            if (
+              card.querySelector('input[type="radio"]:checked')?.value ===
+              undefined
+            ) {
+              alert("勝敗が入力されていない対戦カードがあります");
+              return;
             }
 
-            async function finishMatching() {
-
+            if (
+              card.querySelector('input[type="text"]')?.value.trim() === ""
+            ) {
+              alert("石数が未入力の対戦カードがあります");
+              return;
             }
+
+            const stone_diff = Number(
+              card.querySelector('input[type="text"]')?.value,
+            );
+
+            if (
+              !(
+                0 <= stone_diff &&
+                stone_diff <= 64 &&
+                stone_diff % 2 === 0 &&
+                Number.isInteger(stone_diff)
+              )
+            ) {
+              alert("石数は0以上64以下の偶数でなければいけません");
+              return;
+            }
+
+            const winner = card.querySelector(
+              'input[type="radio"]:checked',
+            )?.value;
+              card.querySelector('input[type="text"]')?.value;
+
+            const data = {
+              winner: winner,
+              stone_diff: stone_diff,
+            };
+
+            try {
+              const response = await fetch(apiUrl, {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/x-www-form-urlencoded",
+                },
+                body: new URLSearchParams(data).toString(),
+              });
+
+             if (!response.ok) {
+                console.error(`APIエラー: ${response.statusText}`);
+              } else {
+                console.log(`送信成功: ${JSON.stringify(data)}`);
+                location.reload();
+              }
+            } catch (error) {
+              console.error(`送信失敗: ${error.message}`);
+            }
+          }
+
+          async function deleteGame(player1, player2) {
+            const apiUrl = "/delete_game";
+            const data = {
+              player_id1: player1,
+              player_id2: player2
+            };
+            try {
+              const response = await fetch(apiUrl, {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/x-www-form-urlencoded",
+                },
+                body: new URLSearchParams(data).toString(),
+              });
+
+             if (!response.ok) {
+                console.error(`APIエラー: ${response.statusText}`);
+              } else {
+                console.log(`送信成功: ${JSON.stringify(data)}`);
+                location.reload()
+              }
+            } catch (error) {
+              console.error(`送信失敗: ${error.message}`);
+            }
+          }
+
+          async function startOverMatching() {
+            const apiUrl = "http://127.0.0.1:5000/game_input";
+
+            try {
+              const response = await fetch("http://127.0.0.1:5000/matching");
+
+              location.reload();
+            } catch (error) {
+              element.textContent = `error: ${error.message}`;
+            }
+          }
+
+          async function finishMatching() {}
         </script>
-      {% endif %}
+        {% endif %}
       </div>
       <div id="ranking">
         <!--ここに画面右側-->
         {% if (game_data.round != 0) %}
         <h2 class="ranking_title">暫定順位表</h2>
-        <table class="player-table"  >
+        <table class="player-table">
           <tr>
             <th>名前</th>
             <th>勝数</th>
@@ -252,18 +435,18 @@
             <th>状態</th>
           </tr>
           {% for player in ranks %}
-          <tr {% if player.end_game == 1 %} bgcolor="#aa0000" {% endif %}>
+          <tr>
             <td>{{ player.name }}</td>
             <td>{{ player.win }}</td>
             <td>{{ player.lose }}</td>
             <td>{{ player.stone_diff }}</td>
             <td>
-              <a href="{{ url_for('person_result', name=player.name) }}"
+              <a href="{{ url_for('person_result', player_id=player.player_id) }}"
                 >戦績確認</a
               >
             </td>
             <td>
-              <a href="{{ url_for('change_status', name=player.name)}}"
+              <a href="{{ url_for('change_status', player_id=player.player_id)}}"
                 >{{ player.status }}</a
               >
             </td>
@@ -271,38 +454,42 @@
           {% endfor %}
         </table>
         {% else %}
-          <h2 class="ranking_title">選手名簿</h2>
-          <table class="player-table">
-            <tr>
-                <th>名前</th>
-                <th>略称</th>
-                <th>都道府県</th>
-                <th>段級位</th>
-                <th>状態</th>
-            </tr>
-            {% for player in players %}
-            <tr class="player_data" data-url="{{ url_for('add_player', name=player.name) }}"><!--ここのページは後で作成-->
-              <td>{{ player.name }}</td>
-              <td>{{ player.short }}</td>
-              <td>{{ player.block }}</td>
-              <td>{{ player.grade }}</td>
-              <td>
-              <a href="{{ url_for('change_status', name=player.name)}}"
+        <h2 class="ranking_title">選手名簿</h2>
+        <table class="player-table">
+          <tr>
+            <th>名前</th>
+            <th>略称</th>
+            <th>都道府県</th>
+            <th>段級位</th>
+            <th>状態</th>
+          </tr>
+          {% for player in players %}
+          <tr
+            class="player_data"
+            data-url="{{ url_for('add_player', name=player.name) }}"
+          >
+            <!--ここのページは後で作成-->
+            <td>{{ player.name }}</td>
+            <td>{{ player.short }}</td>
+            <td>{{ player.block }}</td>
+            <td>{{ player.grade }}</td>
+            <td>
+              <a href="{{ url_for('change_status', player_id=player.id)}}"
                 >{{ player.status }}</a
               >
-              </td>
-            </tr>
-            {% endfor %}
+            </td>
+          </tr>
+          {% endfor %}
         </table>
         <script>
-          document.addEventListener("DOMContentLoaded", function() {
+          document.addEventListener("DOMContentLoaded", function () {
             let rows = document.querySelectorAll(".player_data");
 
-            rows.forEach(row => {
-              row.addEventListener("click", function() {
+            rows.forEach((row) => {
+              row.addEventListener("click", function () {
                 let url = row.getAttribute("data-url");
                 if (url) {
-                    window.location.href = url;
+                  window.location.href = url;
                 }
               });
             });
@@ -311,6 +498,5 @@
         {% endif %}
       </div>
     </div>
-    
   </body>
 </html>
