@@ -140,9 +140,11 @@ def fix_prev_game():
 @app.route('/hand_matching')
 def hand_matching():
     now_matches, players = gm.data_for_hand()
+    name_list = gm.name_list()
     return render_template(
         'hand_matching.html',
         now_matches=now_matches,
+        name_list=name_list,
         players = players
     )
 
