@@ -26,6 +26,7 @@ def debug_index():
 @app.route('/')
 def index():
     players, ranks, game_data, now_matches, end_game, no_matches, players_dict = gm.data_for_index()
+    print("no", no_matches)
     return render_template(
         'index.html',
         players=players,
@@ -65,6 +66,8 @@ def add_game():
 def fix_game():
     player1 = int(request.args.get('player1'))
     player2 = int(request.args.get('player2'))
+    name_list = gm.name_list()
+
     
     if player1 == '-' or player2 == '-':
         player = player1 if player2 == '-' else player2
@@ -74,7 +77,8 @@ def fix_game():
             'fix_no_game.html',
             player=player,
             win_lose = win_lose,
-            prev_stone = prev_stone
+            prev_stone = prev_stone,
+            name_list = name_list
         )
     else:
         round, prev_data = gm.get_game_result(player1, player2)
@@ -112,6 +116,7 @@ def matching():
 def fix_draw():
     player1 = int(request.args.get('player1'))
     player2 = int(request.args.get('player2'))
+    name_list = gm.name_list()
 
     round, prev_data = gm.get_game_result(player1, player2)
     return render_template(
@@ -119,7 +124,8 @@ def fix_draw():
         player1=player1,
         player2=player2,
         prev_data=prev_data,
-        round=round
+        round=round,
+        name_list = name_list
     )
     
 

@@ -105,6 +105,7 @@ class GameManager():
             ranks_dict[ranks[i]['player_id']] = i
 
         game_data = {'round': self.round, 'during_game': self.during_game}
+        print(_match_data)
         for row in _match_data:
             if row[2] == "不戦勝" or row[2] == "不戦敗":
                 no_matches.append({'player1': row[0], 'player2': row[1], 'winner': row[2]})
@@ -227,7 +228,7 @@ class GameManager():
 
         for player_id in no_players:
             self.game_result_model.add(round, "不戦敗", player_id, 64)
-            self.now_match_model.add(player1, "-", "不戦敗")
+            self.now_match_model.add(player_id, "-", "不戦敗")
         
         
         

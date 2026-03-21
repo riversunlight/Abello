@@ -23,7 +23,7 @@
         <td>{{ battle.stone }}</td>
         <td>
           <a
-            href="{{ url_for('fix_draw', player1 = name, player2 = battle.opponent) }}"
+            href="{{ url_for('fix_draw', player1 = player_id, player2 = battle.opponent) }}"
             >修正</a
           >
         </td>
