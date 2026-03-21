@@ -10,8 +10,8 @@
     <h2>前回入力</h2>
     <br />
     ラウンド数: {{ round }} <br />
-    勝者: {{prev_data.winner}}<br />
-    敗者: {{prev_data.loser}}<br />
+    勝者: {{name_list[prev_data.winner]}}<br />
+    敗者: {{name_list[prev_data.loser]}}<br />
     石差: {{prev_data.stone_diff}}<br />
     <br />
 
@@ -22,13 +22,13 @@
         id="{{player1}}"
         name="winner"
         value="{{player1}}"
-      /><label for="{{player1}}">{{player1}}</label><br />
+      /><label for="{{player1}}">{{name_list[player1]}}</label><br />
       <input
         type="radio"
         id="{{player2}}"
         name="winner"
         value="{{player2}}"
-      /><label for="{{player2}}">{{player2}}</label><br />
+      /><label for="{{player2}}">{{name_list[player2]}}</label><br />
       <label for="stone_diff">石差(絶対値、符号なし)</label>
       <input type="text" id="stone_diff" name="stone_diff" />
       <input type="hidden" id="round" name="round" value="{{ round }}" />

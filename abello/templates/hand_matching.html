@@ -16,8 +16,8 @@
       </tr>
       {% for match in now_matches %}
       <tr>
-        <td>{{ match.player1 }}</td>
-        <td>{{ match.player2 }}</td>
+        <td>{{ name_list[match.player1] }}</td>
+        <td>{{ name_list[match.player2] }}</td>
       </tr>
       {% endfor %}
     </table>

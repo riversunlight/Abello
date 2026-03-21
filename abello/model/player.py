@@ -7,7 +7,9 @@ class PlayerModel():
         con = sqlite3.connect(self.DATABASE)
         con.execute('INSERT INTO players(name, short, block, grade, status) VALUES(?, ?, ?, ?, ?)', [name, short, block, grade, "参加"])
         con.commit()
+        res = con.execute('SELECT player_id FROM players WHERE name = ? AND short = ? AND block = ? AND grade = ? AND status = ?', [name, short, block, grade, "参加"]).fetchall()
         con.close()
+        return res[0][0]
 
     def delete(self, player_id):
         con = sqlite3.connect(self.DATABASE)

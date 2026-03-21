@@ -18,6 +18,19 @@ class GameManager():
     def register(self, name, short, block, grade):
         self.player_model.add(name, short, block, grade)
 
+    def delay_register(self, name, short, block, grade):
+        player_id = self.player_model.add(name, short, block, grade)
+        
+        # 過去
+        self.result_model.add(player_id)
+        for i in range(1, self.round):
+            self.result_model.update_data(player_id, False, 64)
+            self.game_result_model.add(i, "不戦敗", player_id, 64)
+        
+        # 現在
+        self.game_result_model.add(self.round, "不戦敗", player_id, 64)
+        self.now_match_model.add(player_id, "-", "不戦敗")
+
     def delete_player(self, player_id):
         self.player_model.delete(player_id)
 
@@ -80,6 +93,7 @@ class GameManager():
             player_id = player_data['player_id']
             name = player_data['name']
             person_result = self.result_model.person_data(player_id)
+            print("ss", player_id, person_result)
             if person_result == None:
                 continue
             win = person_result['win']
@@ -105,6 +119,7 @@ class GameManager():
             ranks_dict[ranks[i]['player_id']] = i
 
         game_data = {'round': self.round, 'during_game': self.during_game}
+        print(_match_data)
         for row in _match_data:
             if row[2] == "不戦勝" or row[2] == "不戦敗":
                 no_matches.append({'player1': row[0], 'player2': row[1], 'winner': row[2]})
@@ -227,7 +242,7 @@ class GameManager():
 
         for player_id in no_players:
             self.game_result_model.add(round, "不戦敗", player_id, 64)
-            self.now_match_model.add(player1, "-", "不戦敗")
+            self.now_match_model.add(player_id, "-", "不戦敗")
         
         
         
