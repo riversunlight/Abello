@@ -27,6 +27,8 @@ def debug_index():
 def index():
     players, ranks, game_data, now_matches, end_game, no_matches, players_dict = gm.data_for_index()
     print("no", no_matches)
+    print("pl", players)
+    print("list", players_dict)
     return render_template(
         'index.html',
         players=players,
@@ -105,6 +107,16 @@ def register():
     block = request.form['block']
     grade = request.form['grade']
     gm.register(name, short, block, grade)
+    return redirect(url_for('index'))
+
+
+@app.route('/delay_register', methods=['POST'])
+def delay_register():
+    name = request.form['name']
+    short = request.form['short']
+    block = request.form['block']
+    grade = request.form['grade']
+    gm.delay_register(name, short, block, grade)
     return redirect(url_for('index'))
 
 @app.route('/matching')
