@@ -294,9 +294,15 @@ class GameManager():
 
     def get_status(self, player_id):
         return self.player_model.get_player_data(player_id)['status']
+    
+    def get_name(self, player_id):
+        return self.player_model.get_player_data(player_id)['name']
 
     def change_status_exe(self, player_id, status):
         self.player_model.change_status(player_id, status)
+
+    def change_name_exe(self, player_id, new_name):
+        self.player_model.change_name(player_id, new_name)
     
     def reset_database(self):
         self.player_model.reset()

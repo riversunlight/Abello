@@ -436,7 +436,9 @@
           </tr>
           {% for player in ranks %}
           <tr>
-            <td>{{ player.name }}</td>
+            <td>
+              <a href="{{ url_for('change_name', player_id=player.player_id) }}">
+              {{ player.name }}</a></td>
             <td>{{ player.win }}</td>
             <td>{{ player.lose }}</td>
             <td>{{ player.stone_diff }}</td>

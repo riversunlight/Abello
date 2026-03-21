@@ -155,12 +155,33 @@ def swap_match():
 
     return redirect(url_for('index'))
 
+@app.route('/change_name')
+def change_name():
+    player_id = int(request.args.get('player_id'))
+    status = gm.get_status(player_id)
+    name = gm.get_name(player_id)
+    return render_template(
+        'change_name.html',
+        name = name,
+        player_id=player_id,
+        status = status
+    )
+
+@app.route('/change_name_exe', methods=["POST"])
+def change_name_exe():
+    player_id = int(request.args.get('player_id'))
+    new_name = request.form['new_name']
+    gm.change_name_exe(player_id, new_name)
+    return redirect(url_for('index'))
+
 @app.route('/change_status')
 def change_status():
     player_id = int(request.args.get('player_id'))
+    name = gm.get_name(player_id)
     status = gm.get_status(player_id)
     return render_template(
         'change_status.html',
+        name=name,
         player_id=player_id,
         status = status
     )

@@ -38,6 +38,12 @@ class PlayerModel():
         con.commit()
         con.close()
     
+    def change_name(self, player_id, new_name):
+        con = sqlite3.connect(self.DATABASE)
+        con.execute('UPDATE players SET name = ? WHERE player_id = ?', [new_name, player_id])
+        con.commit()
+        con.close()
+    
     def reset(self):
         con = sqlite3.connect(self.DATABASE)
         con.execute("DELETE FROM players")

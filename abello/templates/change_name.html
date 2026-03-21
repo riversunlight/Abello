@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <title>{{name}}さんの名前変更</title>
+  </head>
+  <body>
+    <h1>{{name}}さんの名前変更</h1>
+    現在の名前: {{ name }}
+    <form method="post" action="{{ url_for('change_name_exe', player_id=player_id) }}">
+      <input type="text" name="new_name"/>
+      <input type="hidden" name="name" value="{{name}}" />
+      <input type="submit" value="変更" />
+    </form>
+    <a href="{{ url_for('index')}}">戻る</a>
+  </body>
+</html>
